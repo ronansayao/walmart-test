@@ -1,4 +1,0 @@
-walmart-test
-============
-
-WalmartTest
