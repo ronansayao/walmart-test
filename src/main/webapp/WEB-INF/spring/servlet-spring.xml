@@ -33,6 +33,7 @@
     <!-- Configure bean to convert JSON to POJO and vice versa -->
     <beans:bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
     </beans:bean> 
-     
+    
+    <context:component-scan base-package="com.walmart.logistics.pathfinder.controller" /> 
      
 </beans:beans>

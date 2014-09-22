@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.walmart.logistics.pathfinder.model.Movement;
 import com.walmart.logistics.pathfinder.rest.WalmartRestURIConstants;
+import com.walmart.logistics.pathfinder.vo.MapVO;
 
 /**
  * @author ronan.sayao
@@ -19,7 +20,7 @@ import com.walmart.logistics.pathfinder.rest.WalmartRestURIConstants;
  */
 public class PathFinderControllerTest {
 	
-	public static final String SERVER_URI = "http://localhost:8088";
+	public static final String SERVER_URI = "http://10.0.0.233:8088";
 	
 	RestTemplate restTemplate = new RestTemplate();
 	
@@ -34,11 +35,19 @@ public class PathFinderControllerTest {
 	
 	@Test
 	public void testGetMap() {
-		List<LinkedHashMap> map = restTemplate.getForObject(SERVER_URI+WalmartRestURIConstants.GET_MAP, List.class);
-		System.out.println("Size: "+map.size());
-		for(LinkedHashMap mapVO : map){
-		    System.out.println("ID="+mapVO.get("id")+",Name="+mapVO.get("name"));
-		}
+		
+		/*RestTemplate restTemplate = new RestTemplate();
+        Map map = restTemplate.getForObject(SERVER_URI+"/rest/map/1", Map.class);
+        
+        System.out.println();
+        //printEmpData(map);*/
+        
+        
+		MapVO map = restTemplate.getForObject(SERVER_URI+"/rest/map/EstadoSaoPaulo", MapVO.class);
+		//System.out.println("Size: "+map.size());
+		//for(MapVO mapVO : map){
+		    System.out.println("Name= "+map.getName());
+		//}
 	}
 	
 	

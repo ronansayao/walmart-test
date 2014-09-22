@@ -16,6 +16,10 @@ public class MapVO {
 	private String name;
 	private List<Movement> movements;
 	
+	public MapVO (){
+		
+	}
+	
 	public MapVO (String name, List<Movement> movements) {
 		this.name = name;
 		this.movements = movements;
