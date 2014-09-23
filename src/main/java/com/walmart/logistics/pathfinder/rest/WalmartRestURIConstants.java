@@ -15,6 +15,7 @@ public class WalmartRestURIConstants {
     public static final String GET_MAP = "/rest/map/{name}";
     public static final String CREATE_MOVEMENTS = "/rest/movements/create";
     public static final String CREATE_MAP = "/rest/map/create";
+    public static final String GET_PLAN_COST_ROUTE = "/rest/route/{origin}/{destination}/{autonomy}/{gasprice}";
     	
 
 }

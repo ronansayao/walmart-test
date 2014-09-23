@@ -3,7 +3,8 @@
  */
 package com.walmart.logistics.pathfinder.services;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -17,6 +18,8 @@ import com.walmart.logistics.pathfinder.repository.MapRepository;
 import com.walmart.logistics.pathfinder.repository.MovementRepository;
 import com.walmart.logistics.pathfinder.repository.PointRepository;
 import com.walmart.logistics.pathfinder.vo.MapVO;
+import com.walmart.logistics.pathfinder.vo.PathEntriesVO;
+import com.walmart.logistics.pathfinder.vo.RouteVO;
 
 /**
  * @author ronan.sayao
@@ -40,27 +43,36 @@ public class PathFinderServicesImpl implements PathFinderServices {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.walmart.logistics.pathfinder.services.PathFinderServices#savePoints(java.util.List)
-	 */
-	@Transactional
-	public void savePoints(List<Point> listPoints) {
-		pointRepository.save(listPoints);	
-	}
-
-	/* (non-Javadoc)
 	 * @see com.walmart.logistics.pathfinder.services.PathFinderServices#saveMap(com.walmart.logistics.pathfinder.model.Map)
 	 */
 
 	@Transactional
 	public void saveMap(MapVO mapVO) {
 		
+		Set<String> points = new HashSet<String>();
+		
 		Map mapPersistence = new Map(mapVO.getName());
 		mapRepository.save(mapPersistence);
 		
 		for (Movement movement : mapVO.getMovements()) {
+			points.add(movement.getSource());
+			points.add(movement.getDestination());
 			movement.setMap(mapPersistence);
 			movementRepository.save(movement);
 		}
+		
+		for (String stringPoint : points) {
+			Point pointExists = pointRepository.findByName(stringPoint);
+			if (pointExists != null) {
+				continue;
+			} else {
+				Point point = new Point(stringPoint);
+				pointRepository.save(point);
+			}
+			
+				
+		}
+		
 		
 	}
 	
@@ -71,6 +83,16 @@ public class PathFinderServicesImpl implements PathFinderServices {
 		MapVO mapVO = new MapVO(map.getName(), movementRepository.findByMap(map));
 		
 		return mapVO;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.walmart.logistics.pathfinder.services.PathFinderServices#getPathAndCosts(com.walmart.logistics.pathfinder.vo.PathEntriesVO)
+	 */
+	@Override
+	public RouteVO getPathAndCosts(PathEntriesVO pathEntriesVO) {
+		
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

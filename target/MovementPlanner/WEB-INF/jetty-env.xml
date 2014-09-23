@@ -1,0 +1,27 @@
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+
+	<New id="walmartCRMDataSource" class="org.eclipse.jetty.plus.jndi.Resource">
+	    <Arg></Arg>
+	    <Arg>jdbc/walmartCRMDataSource</Arg>
+	    <Arg>
+	      <New class="oracle.jdbc.pool.OracleDataSource">
+	        <Set name="DriverType">thin</Set>
+	        <Set name="URL">jdbc:oracle:thin:@localhost:1521:XE</Set>
+	        <Set name="User">walmart</Set>
+	        <Set name="Password">walmart</Set>
+	        <Set name="connectionCachingEnabled">true</Set>
+	        <Set name="connectionCacheProperties">
+	          <New class="java.util.Properties">
+	            <Call name="setProperty">
+	              <Arg>MinLimit</Arg>
+	              <Arg>5</Arg>
+	            </Call>
+	            <!-- put the other properties in here too -->
+	          </New>
+	        </Set>
+	      </New>
+	    </Arg>
+	</New>
+
+
+</Configure>

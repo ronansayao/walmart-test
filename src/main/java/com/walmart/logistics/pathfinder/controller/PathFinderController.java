@@ -3,7 +3,6 @@
  */
 package com.walmart.logistics.pathfinder.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +20,8 @@ import com.walmart.logistics.pathfinder.model.Movement;
 import com.walmart.logistics.pathfinder.rest.WalmartRestURIConstants;
 import com.walmart.logistics.pathfinder.services.PathFinderServices;
 import com.walmart.logistics.pathfinder.vo.MapVO;
+import com.walmart.logistics.pathfinder.vo.PathEntriesVO;
+import com.walmart.logistics.pathfinder.vo.RouteVO;
 
 /**
  * @author ronan.sayao
@@ -57,6 +58,14 @@ public class PathFinderController {
         logger.info("Start getMap"); 
         MapVO map = pathFinderServices.findMapByName(nameMap);
         return map;
+    }
+    
+    @RequestMapping(value = WalmartRestURIConstants.GET_PLAN_COST_ROUTE, method = RequestMethod.POST)
+    public @ResponseBody RouteVO planRoute(PathEntriesVO pathEntriesVO) {
+        logger.info("Start planRoute");
+        
+        //MapVO map = pathFinderServices.findMapByName(nameMap);
+        return null;
     }
 
 }

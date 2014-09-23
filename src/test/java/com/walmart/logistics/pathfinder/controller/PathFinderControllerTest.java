@@ -3,9 +3,6 @@
  */
 package com.walmart.logistics.pathfinder.controller;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.web.client.RestTemplate;
@@ -34,6 +31,7 @@ public class PathFinderControllerTest {
     }
 	
 	@Test
+	@Ignore
 	public void testGetMap() {
 		
 		/*RestTemplate restTemplate = new RestTemplate();
