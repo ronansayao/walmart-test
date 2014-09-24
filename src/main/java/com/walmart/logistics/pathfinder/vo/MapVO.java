@@ -6,6 +6,7 @@ package com.walmart.logistics.pathfinder.vo;
 import java.util.List;
 
 import com.walmart.logistics.pathfinder.model.Movement;
+import com.walmart.logistics.pathfinder.model.Point;
 
 /**
  * @author ronan.sayao
@@ -15,14 +16,16 @@ public class MapVO {
 	
 	private String name;
 	private List<Movement> movements;
+	private Iterable<Point> points;
 	
 	public MapVO (){
 		
 	}
 	
-	public MapVO (String name, List<Movement> movements) {
+	public MapVO (String name, List<Movement> movements, Iterable<Point> points) {
 		this.name = name;
 		this.movements = movements;
+		this.points = points;
 	}
 	
 	/**
@@ -48,6 +51,20 @@ public class MapVO {
 	 */
 	public void setMovements(List<Movement> movements) {
 		this.movements = movements;
+	}
+
+	/**
+	 * @return the points
+	 */
+	public Iterable<Point> getPoints() {
+		return points;
+	}
+
+	/**
+	 * @param points the points to set
+	 */
+	public void setPoints(Iterable<Point> points) {
+		this.points = points;
 	}
 
 	

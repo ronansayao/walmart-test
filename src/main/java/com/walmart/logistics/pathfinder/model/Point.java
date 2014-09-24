@@ -34,9 +34,7 @@ public class Point {
 	
 	public Point(String name) {
 		this.name = name;
-	}
-	
-	
+	}	
 
 	/**
 	 * @return the id
@@ -69,6 +67,24 @@ public class Point {
 	@Override
 	public String toString() {
 		return this.name;
+	}
+	/**
+	 * 
+	 */
+
+	@Override
+	public boolean equals( Object obj )	{
+		
+		if (!(obj instanceof Point))
+	            return false;
+        if (this.name == ((Point) obj).getName())
+	            return true;
+		return false;	
+	}
+	
+	@Override
+	public int hashCode(){
+		return this.name.hashCode();
 	}
 
 }

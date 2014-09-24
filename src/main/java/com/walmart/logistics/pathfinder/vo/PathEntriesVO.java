@@ -10,11 +10,24 @@ package com.walmart.logistics.pathfinder.vo;
  */
 public class PathEntriesVO {
 	
+	private String mapName;
 	private String origin;
 	private String destination;
 	private Double autonomy;
 	private Double gasprice;
 	
+	/**
+	 * @return the mapName
+	 */
+	public String getMapName() {
+		return mapName;
+	}
+	/**
+	 * @param mapName the mapName to set
+	 */
+	public void setMapName(String mapName) {
+		this.mapName = mapName;
+	}
 	/**
 	 * @return the origin
 	 */
