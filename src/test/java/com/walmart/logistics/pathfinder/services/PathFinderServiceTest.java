@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.walmart.logistics.pathfinder.common.CampinasRegionMap;
 import com.walmart.logistics.pathfinder.vo.MapVO;
+import com.walmart.logistics.pathfinder.vo.PathEntriesVO;
 
 /**
  * @author ronan.sayao
@@ -31,7 +32,7 @@ public class PathFinderServiceTest {
 	
 	@Test
 	public void testCreateMap() {
-		MapVO map = new MapVO(mapCampinas.getMap().getName(), mapCampinas.getMovements());
+		MapVO map = new MapVO(mapCampinas.getMap().getName(), mapCampinas.getMovements(), mapCampinas.getPoints());
 		pathFinderServices.saveMap(map);
     }
 	
@@ -40,6 +41,21 @@ public class PathFinderServiceTest {
 		MapVO mapVerify = pathFinderServices.findMapByName(mapCampinas.getMap().getName());
 		Assert.assertNotNull("Verify returned object.", mapVerify);
     }
+	
+	@Test
+	public void testgetPathAndCosts() {
+		
+		PathEntriesVO pathEntriesVO = new PathEntriesVO();
+		pathEntriesVO.setMapName(mapCampinas.getMap().getName());
+		pathEntriesVO.setOrigin("Limeira");
+		pathEntriesVO.setDestination("Campinas");
+		pathEntriesVO.setAutonomy(10.0);
+		pathEntriesVO.setGasprice(2.5);
+		
+		pathFinderServices.getPathAndCosts(pathEntriesVO);	
+		
+		
+	}
 	
 
 }

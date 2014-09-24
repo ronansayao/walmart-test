@@ -3,11 +3,7 @@
  */
 package com.walmart.logistics.pathfinder.services;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.walmart.logistics.pathfinder.algorithm.DijkstraAlgorithm;
-import com.walmart.logistics.pathfinder.algorithm.DijkstraAlgorithmTest;
 import com.walmart.logistics.pathfinder.model.Graph;
 import com.walmart.logistics.pathfinder.model.Map;
 import com.walmart.logistics.pathfinder.model.Movement;
@@ -100,6 +95,8 @@ public class PathFinderServicesImpl implements PathFinderServices {
 		points = (List<Point>) mapVO.getPoints();
 		movements = mapVO.getMovements();
 		
+		Double totalCost = new Double(0.0);
+		
 		
 		Long startMilis = System.currentTimeMillis();
 		logger.debug("Method has started: "+startMilis);
@@ -109,20 +106,19 @@ public class PathFinderServicesImpl implements PathFinderServices {
 		dijkstra.execute(pathEntriesVO.getOrigin());
 		
 		routeVO.setPath(dijkstra.getPath(pathEntriesVO.getDestination()));
+		int shortestDistance = dijkstra.getShortestDistance(pathEntriesVO.getDestination());
 		
-		//routeVO.setTotalCost(totalCost);
-		LinkedList<String> path = dijkstra.getPath(pathEntriesVO.getDestination());
-		int distance = dijkstra.getShortestDistance(pathEntriesVO.getDestination());
-		assertNotNull(path);
-		assertTrue(path.size() > 0);
+		totalCost = ((shortestDistance/pathEntriesVO.getAutonomy())*pathEntriesVO.getGasprice());
 		
-		for (String track : path) {
-		  System.out.println(track);
+		System.out.print("Caminho: ");
+		for (String point : routeVO.getPath()) {
+		  System.out.print(point+"-");
 		}
-		System.out.println("Distance: "+distance);
-		logger.debug("Method has finished: "+(System.currentTimeMillis()-startMilis)+" ms");
+		System.out.println("");
+		System.out.println("Distance: "+shortestDistance);
+		System.out.println("Total Cost: "+totalCost);
+		logger.debug("Method has finished and executed in: "+(System.currentTimeMillis()-startMilis)+" ms");
 		
-		// TODO Auto-generated method stub
 		return routeVO;
 	}
 
