@@ -74,7 +74,7 @@ public class PathFinderControllerTest {
         logger.info("Jetty Server has started");
     }
 	/**
-	 * 
+	 * Execute all tests in order.
 	 */
 	@Test
 	public void executeTest () {
@@ -82,15 +82,21 @@ public class PathFinderControllerTest {
 		Assert.assertEquals(mapCampinas.getMap().getName(), mapVOCreate.getName());
 		MapVO mapVOGet = testGetMap();
 		Assert.assertEquals("EstadoSaoPaulo", mapVOGet.getName());
-		RouteVO routeVO =testGetRoute();
+		RouteVO routeVO = testGetRoute();
 		Assert.assertEquals("[Limeira, Americana, Campinas]", routeVO.getPath().toString());
+		RouteVO routeVOEquals = testGetRouteOriginDestinationEquals();
+		Assert.assertEquals("[Limeira]",routeVOEquals.getPath().toString());
 		Assert.assertEquals(16.25D, routeVO.getTotalCost());
 		RouteVO routeVOInvalid = testGetRouteInvalid();
 		Assert.assertNotNull(routeVOInvalid.getErrorMessage());
+		RouteVO routeVOInvalidNull = testGetRouteInvalidNull();
+		Assert.assertNotNull(routeVOInvalidNull.getErrorMessage());
+		RouteVO routeVOInvalidNumber = testGetRouteInvalidNegativeNumber();
+		Assert.assertNotNull(routeVOInvalidNumber.getErrorMessage());
 	}
 	
 	/**
-	 * 
+	 * Test to create a regular map.
 	 */
 	public MapVO testCreateMap() {
 		
@@ -99,6 +105,18 @@ public class PathFinderControllerTest {
         mapVO.setMovements(mapCampinas.getMovements());
         MapVO responseMapVO = restTemplate.postForObject(SERVER_URI+WalmartRestURIConstants.CREATE_MAP, mapVO, MapVO.class);
         return responseMapVO;
+        
+    }
+	
+	/**
+	 * Test to create a map null.
+	 */
+	@Test
+	public void testCreateMapNull() {
+		
+        MapVO mapVO = new MapVO();
+        MapVO responseMapVO = restTemplate.postForObject(SERVER_URI+WalmartRestURIConstants.CREATE_MAP, mapVO, MapVO.class);
+        Assert.assertNotNull(responseMapVO.getErrorMessage());
         
     }
 	
@@ -132,6 +150,25 @@ public class PathFinderControllerTest {
 	
 	/**
 	 * This method set a map of cities in Campinas region and calculates the shortest path and costs.
+	 * Origin and destination the same
+	 */
+	public RouteVO testGetRouteOriginDestinationEquals() {
+		
+		PathEntriesVO pathEntriesVO = new PathEntriesVO();
+		
+		pathEntriesVO.setMapName(mapCampinas.getMap().getName());
+		pathEntriesVO.setOrigin("Limeira");
+		pathEntriesVO.setDestination("Limeira");
+		pathEntriesVO.setAutonomy(10.0);
+		pathEntriesVO.setGasprice(2.5);
+        
+		RouteVO routeVO = restTemplate.postForObject(SERVER_URI+WalmartRestURIConstants.GET_PLAN_COST_ROUTE, pathEntriesVO, RouteVO.class);
+		
+		return routeVO;	
+	}
+	
+	/**
+	 * This method set a map of cities in Campinas region and calculates the shortest path and costs.
 	 */
 	public RouteVO testGetRouteInvalid() {
 		
@@ -139,10 +176,39 @@ public class PathFinderControllerTest {
 		
 		pathEntriesVO.setMapName(mapCampinas.getMap().getName());
 		pathEntriesVO.setOrigin("Limeira");
-		pathEntriesVO.setDestination("Indaiatuba");
+		pathEntriesVO.setDestination("Sorocaba");
 		pathEntriesVO.setAutonomy(10.0);
 		pathEntriesVO.setGasprice(2.5);
-        
+		logger.info("Invalid Destination: "+pathEntriesVO.getDestination());
+		RouteVO routeVO = restTemplate.postForObject(SERVER_URI+WalmartRestURIConstants.GET_PLAN_COST_ROUTE, pathEntriesVO, RouteVO.class);
+		logger.info(routeVO.getErrorMessage());
+		return routeVO;	
+	}
+	
+	/**
+	 * This method set a map of cities in Campinas region and calculates the shortest path and costs.
+	 */
+	public RouteVO testGetRouteInvalidNegativeNumber() {
+		
+		PathEntriesVO pathEntriesVO = new PathEntriesVO();
+		
+		pathEntriesVO.setMapName(mapCampinas.getMap().getName());
+		pathEntriesVO.setOrigin("Limeira");
+		pathEntriesVO.setDestination("Campinas");
+		pathEntriesVO.setAutonomy(-10.0);
+		pathEntriesVO.setGasprice(-2.5);
+		logger.info("Invalid Destination: "+pathEntriesVO.getDestination());
+		RouteVO routeVO = restTemplate.postForObject(SERVER_URI+WalmartRestURIConstants.GET_PLAN_COST_ROUTE, pathEntriesVO, RouteVO.class);
+		logger.info(routeVO.getErrorMessage());
+		return routeVO;	
+	}
+	
+	/**
+	 * This method set a map of cities in Campinas region and calculates the shortest path and costs.
+	 */
+	public RouteVO testGetRouteInvalidNull() {
+		
+		PathEntriesVO pathEntriesVO = new PathEntriesVO();
 		RouteVO routeVO = restTemplate.postForObject(SERVER_URI+WalmartRestURIConstants.GET_PLAN_COST_ROUTE, pathEntriesVO, RouteVO.class);
 		logger.info(routeVO.getErrorMessage());
 		return routeVO;	

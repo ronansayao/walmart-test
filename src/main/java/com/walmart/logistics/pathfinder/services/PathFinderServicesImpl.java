@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 import com.walmart.logistics.pathfinder.algorithm.AStarAlgorithmImpl;
 import com.walmart.logistics.pathfinder.algorithm.DijkstraAlgorithmImpl;
 import com.walmart.logistics.pathfinder.common.Constants;
+import com.walmart.logistics.pathfinder.exception.InvalidMapEntriesException;
+import com.walmart.logistics.pathfinder.exception.InvalidPathEntriesException;
 import com.walmart.logistics.pathfinder.exception.PathNotFoundException;
 import com.walmart.logistics.pathfinder.model.Map;
 import com.walmart.logistics.pathfinder.model.Movement;
@@ -64,7 +66,7 @@ public class PathFinderServicesImpl implements PathFinderServices {
 
 
 	/**
-	 * Method responsible to save Map.
+	 * Method to save Map.
 	 */
 	@Transactional
 	public void saveMap(MapVO mapVO) {
@@ -86,7 +88,7 @@ public class PathFinderServicesImpl implements PathFinderServices {
 	}
 	
 	/**
-	 * 
+	 * Method to find map by name.
 	 */
 	public MapVO findMapByName(String nameMap) {
 		
@@ -100,14 +102,15 @@ public class PathFinderServicesImpl implements PathFinderServices {
 	 * @see com.walmart.logistics.pathfinder.services.PathFinderServices#getPathAndCosts(com.walmart.logistics.pathfinder.vo.PathEntriesVO)
 	 */
 	@Override
+	/**
+	 * Method to find shortest path and costs based on entries.
+	 */
 	public RouteVO getPathAndCosts(PathEntriesVO pathEntriesVO) throws PathNotFoundException {
 		
 		MapVO mapVO = findMapByName(pathEntriesVO.getMapName());
 		RouteVO routeVO = new RouteVO();
 		points = (List<Point>) pointRepository.findAll();
 		movements = mapVO.getMovements();
-		
-		validateEntries(pathEntriesVO);
 		
 		Properties prop = new Properties();
 		
@@ -152,7 +155,6 @@ public class PathFinderServicesImpl implements PathFinderServices {
 	private Properties getProperties(Properties prop) {
 		InputStream input;
 		try {
-			//URL url =getClass().getResourceAsStream(Constants.PROPERTIES_FILE);
 			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 			input = classLoader.getResourceAsStream(Constants.PROPERTIES_FILE);
 			prop.load(input);
@@ -188,11 +190,51 @@ public class PathFinderServicesImpl implements PathFinderServices {
 	/**
 	 * 
 	 * @param pathEntriesVO
+	 * @throws InvalidMapEntriesException
 	 */
-	private void validateEntries(PathEntriesVO pathEntriesVO) {
-		
-		if(pathEntriesVO.getOrigin().equalsIgnoreCase(pathEntriesVO.getDestination())) {
+	public void validateMapEntries(MapVO mapVO) throws InvalidMapEntriesException {
+		if (mapVO != null) {
 			
+			if (mapVO.getName() == null || mapVO.getName().equalsIgnoreCase("")) {
+				throw new InvalidMapEntriesException(Constants.MAPVO_NAME, Constants.NULL_OR_EMPTY);
+			}
+			if (mapVO.getMovements() == null || mapVO.getMovements().isEmpty()) {
+				throw new InvalidMapEntriesException(Constants.MAPVO_MOVEMENTS, Constants.NULL_OR_EMPTY);
+			}
+			
+		} else {
+			throw new InvalidMapEntriesException(Constants.MAPVO, Constants.NULL_OR_EMPTY);
+		}
+
+	}
+	
+	/**
+	 * 
+	 * @param pathEntriesVO
+	 * @throws InvalidPathEntriesException 
+	 */
+	public void validatePathEntries(PathEntriesVO pathEntriesVO) throws InvalidPathEntriesException {
+		
+		if (pathEntriesVO != null) {
+			
+			if (pathEntriesVO.getOrigin() == null || pathEntriesVO.getOrigin().equalsIgnoreCase("")) {
+				throw new InvalidPathEntriesException(Constants.PATHENTRIESVO_ORIGIN, Constants.NULL_OR_EMPTY);
+			}
+			if (pathEntriesVO.getDestination() == null || pathEntriesVO.getDestination().equalsIgnoreCase("")) {
+				throw new InvalidPathEntriesException(Constants.PATHENTRIESVO_DESTINATION, Constants.NULL_OR_EMPTY);
+			}
+			if (pathEntriesVO.getAutonomy() < 0 ) {
+				throw new InvalidPathEntriesException(Constants.PATHENTRIESVO_AUTONOMY, Constants.LESS_THAN_ZERO);
+			}
+			
+			if (pathEntriesVO.getGasprice() < 0 ) {
+				throw new InvalidPathEntriesException(Constants.PATHENTRIESVO_GASPRICE, Constants.LESS_THAN_ZERO);
+			}
+			//if(pathEntriesVO.getOrigin().equalsIgnoreCase(pathEntriesVO.getDestination())) {
+				
+			//}
+		} else {
+			throw new InvalidPathEntriesException(Constants.PATHENTRIESVO, Constants.NULL_OR_EMPTY);
 		}
 		
 	}

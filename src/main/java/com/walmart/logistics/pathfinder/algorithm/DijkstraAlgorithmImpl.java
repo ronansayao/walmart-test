@@ -52,7 +52,7 @@ public class DijkstraAlgorithmImpl implements AlgorithmStrategy {
         
         Path path = dijkstra.getPath(nodeDestination);
         
-        if (path != null) {
+        if (path != null && !path.empty()) {
 	        Integer shortestDistance = 0;
 	        
 	        for (Iterator<Edge> iterator = path.getEdgeIterator(); iterator.hasNext();) {

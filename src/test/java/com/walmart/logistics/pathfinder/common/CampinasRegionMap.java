@@ -41,6 +41,8 @@ public class CampinasRegionMap {
 		points.add(new Point("Paulinia"));//9
 		points.add(new Point("Campinas"));//10
 		points.add(new Point("SaoPaulo"));//11	
+		points.add(new Point("Indaiatuba"));//12
+		points.add(new Point("Sorocaba"));//13
 	}
 	
 	public void createMovements() {
@@ -74,6 +76,7 @@ public class CampinasRegionMap {
 		
 		movements.add(new Movement("Campinas_SaoPaulo", points.get(10).getName(), points.get(11).getName(), 95, this.map));
 		
+		movements.add(new Movement("Indaiatuba_Sorocaba", points.get(12).getName(), points.get(13).getName(), 62, this.map));
 		
 	}
 	

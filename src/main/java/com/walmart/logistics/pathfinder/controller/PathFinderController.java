@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.walmart.logistics.pathfinder.exception.InvalidMapEntriesException;
+import com.walmart.logistics.pathfinder.exception.InvalidPathEntriesException;
 import com.walmart.logistics.pathfinder.exception.PathNotFoundException;
 import com.walmart.logistics.pathfinder.model.Movement;
 import com.walmart.logistics.pathfinder.rest.WalmartRestURIConstants;
@@ -39,19 +41,7 @@ public class PathFinderController {
 	
 	//Map to store movements, ideally we should use database
     Map<Long, Movement> movementData = new HashMap<Long, Movement>();
-    
-    /**
-     * 
-     * @param movement
-     * @return
-     */
-    @RequestMapping(value = WalmartRestURIConstants.CREATE_MOVEMENTS, method = RequestMethod.POST)
-    public @ResponseBody Movement createMovement(@RequestBody Movement movement) {
-        logger.info("Start createMovement.");
-        pathFinderServices.save(movement);
-        return movement;
-    }
-    
+   
     /**
      * 
      * @param mapVO
@@ -60,6 +50,13 @@ public class PathFinderController {
     @RequestMapping(value = WalmartRestURIConstants.CREATE_MAP, method = RequestMethod.POST)
     public @ResponseBody MapVO createMap(@RequestBody MapVO mapVO) {
         logger.info("Start createMap.");
+        try {
+			pathFinderServices.validateMapEntries(mapVO);
+		} catch (InvalidMapEntriesException e) {
+			mapVO.setErrorMessage(e.getMessage());
+			logger.error(e.getMessage());
+			return mapVO;
+		}
         pathFinderServices.saveMap(mapVO);
         logger.info("Map has created.");
         return mapVO;
@@ -72,8 +69,10 @@ public class PathFinderController {
      */
     @RequestMapping(value = WalmartRestURIConstants.GET_MAP, method = RequestMethod.GET)
     public @ResponseBody MapVO getMapByName(@PathVariable("name") String nameMap) {
-        logger.info("Start getMap"); 
+        logger.debug("Start getMap"); 
         MapVO map = pathFinderServices.findMapByName(nameMap);
+        map.setErrorMessage("Map not found.");
+        logger.debug("End getMap");
         return map;
     }
     
@@ -84,14 +83,21 @@ public class PathFinderController {
      */
     @RequestMapping(value = WalmartRestURIConstants.GET_PLAN_COST_ROUTE, method = RequestMethod.POST)
     public @ResponseBody RouteVO planRoute(@RequestBody PathEntriesVO pathEntriesVO) {
-        logger.info("Start planRoute");
+        logger.debug("Start planRoute");
         RouteVO routeVO = new RouteVO();
 		try {
+			pathFinderServices.validatePathEntries(pathEntriesVO);
 			routeVO = pathFinderServices.getPathAndCosts(pathEntriesVO);
 		} catch (PathNotFoundException e) {
 			routeVO.setErrorMessage(e.getMessage());
+			logger.error(e.getMessage());
+			return routeVO;
+		} catch (InvalidPathEntriesException e) {
+			routeVO.setErrorMessage(e.getMessage());
+			logger.error(e.getMessage());
 			return routeVO;
 		}
+		logger.debug("Plan and route has finished with success.");
         return routeVO;
     }
     
@@ -101,8 +107,9 @@ public class PathFinderController {
      */
     @RequestMapping(value = WalmartRestURIConstants.DUMMY_STRING, method = RequestMethod.GET)
     public @ResponseBody String getMapByName() {
-        logger.info("Start dummy method"); 
+        logger.debug("Start dummy method"); 
         String testString = "Test of call webservices";
+        logger.debug("End dummy method");
         return testString;
     }
 

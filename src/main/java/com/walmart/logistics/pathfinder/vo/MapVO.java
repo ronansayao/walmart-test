@@ -15,6 +15,7 @@ public class MapVO {
 	
 	private String name;
 	private List<Movement> movements;
+	private String errorMessage;
 	
 	public MapVO (){
 		
@@ -48,6 +49,20 @@ public class MapVO {
 	 */
 	public void setMovements(List<Movement> movements) {
 		this.movements = movements;
+	}
+
+	/**
+	 * @return the errorMessage
+	 */
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	/**
+	 * @param errorMessage the errorMessage to set
+	 */
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 
 }

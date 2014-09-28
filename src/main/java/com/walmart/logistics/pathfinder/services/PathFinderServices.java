@@ -3,6 +3,8 @@
  */
 package com.walmart.logistics.pathfinder.services;
 
+import com.walmart.logistics.pathfinder.exception.InvalidMapEntriesException;
+import com.walmart.logistics.pathfinder.exception.InvalidPathEntriesException;
 import com.walmart.logistics.pathfinder.exception.PathNotFoundException;
 import com.walmart.logistics.pathfinder.model.Movement;
 import com.walmart.logistics.pathfinder.vo.MapVO;
@@ -22,6 +24,10 @@ public interface PathFinderServices {
 	public MapVO findMapByName(String nameMap);
 	
 	public RouteVO getPathAndCosts(PathEntriesVO pathEntriesVO) throws PathNotFoundException;
+	
+	public void validateMapEntries(MapVO mapVO) throws InvalidMapEntriesException;
+	
+	public void validatePathEntries(PathEntriesVO pathEntriesVO) throws InvalidPathEntriesException;
 	
 
 }

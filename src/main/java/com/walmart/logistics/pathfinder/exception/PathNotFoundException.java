@@ -24,7 +24,7 @@ public class PathNotFoundException extends Exception {
     public PathNotFoundException(String origin, String destination)
     {	
     	super();
-    	this.message = "Path not found between"+origin+" and "+destination;
+    	this.message = "Path not found between "+origin+" and "+destination;
 
     }
 
