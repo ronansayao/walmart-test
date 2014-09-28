@@ -3,6 +3,7 @@
  */
 package com.walmart.logistics.pathfinder.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +27,7 @@ public class Point {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PointSequence")
 	private Long id;
 	
+	@Column(unique = true)
 	private String name;
 	
 	public Point() {
@@ -77,7 +79,7 @@ public class Point {
 		
 		if (!(obj instanceof Point))
 	            return false;
-        if (this.name == ((Point) obj).getName())
+        if (this.hashCode() == obj.hashCode())
 	            return true;
 		return false;	
 	}

@@ -3,7 +3,7 @@
  */
 package com.walmart.logistics.pathfinder.vo;
 
-import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author ronan.sayao
@@ -11,18 +11,19 @@ import java.util.LinkedList;
  */
 public class RouteVO {
 	
-	private LinkedList<String> path;
+	private List<String> path;
 	private Double totalCost;
+	private String errorMessage;
 	/**
 	 * @return the path
 	 */
-	public LinkedList<String> getPath() {
+	public List<String> getPath() {
 		return path;
 	}
 	/**
 	 * @param path the path to set
 	 */
-	public void setPath(LinkedList<String> path) {
+	public void setPath(List<String> path) {
 		this.path = path;
 	}
 	/**
@@ -36,6 +37,22 @@ public class RouteVO {
 	 */
 	public void setTotalCost(Double totalCost) {
 		this.totalCost = totalCost;
+	}
+	@Override
+	public String toString() {
+		return this.path.toString()+" - "+totalCost.toString();
+	}
+	/**
+	 * @return the errorMessage
+	 */
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+	/**
+	 * @param errorMessage the errorMessage to set
+	 */
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 
 }

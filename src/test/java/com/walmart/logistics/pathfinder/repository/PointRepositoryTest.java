@@ -41,10 +41,7 @@ public class PointRepositoryTest {
 		
 		pointList.add(new Point("Limeira"));
 		pointList.add(new Point("Campinas"));
-		pointList.add(new Point("São Paulo"));
-		pointList.add(new Point("Jundiai"));
-		pointList.add(new Point("Artur Nogueira"));
-		pointList.add(new Point("Holambra"));
+		pointList.add(new Point("SaoPaulo"));
 		
 		pointRepository.save(pointList);
 		

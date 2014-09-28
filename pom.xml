@@ -131,6 +131,52 @@
 			<artifactId>spring-test</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.graphstream</groupId>
+			<artifactId>gs-core</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.graphstream</groupId>
+			<artifactId>gs-ui</artifactId>
+			<version>1.2</version>
+		</dependency>
+		
+		<!-- Jetty -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>8.1.4.v20120524</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-util</artifactId>
+			<version>8.1.14.v20131031</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<version>8.1.4.v20120524</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- <dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-jndi</artifactId>
+			<version>8.1.14.v20131031</version>
+			<scope>test</scope>
+		</dependency> -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-plus</artifactId>
+			<version>8.1.13.v20130916</version>
+			<scope>test</scope>
+		</dependency>
+		
+		
+		
+		
         
    
    </dependencies>

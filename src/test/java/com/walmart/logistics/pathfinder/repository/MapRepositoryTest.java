@@ -39,10 +39,8 @@ public class MapRepositoryTest {
 		map = new Map("Limeira");
 			
 		mapRepository.save(map);
-		
 		Map mapVerify = mapRepository.findByName("Limeira");
 		Assert.assertNotNull("Verify returned object.", mapVerify);
-		
 		mapRepository.delete(map);	
 	}
 
